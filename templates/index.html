@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Object Motion Analysis</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* Custom Styles */
+    body {
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    .navbar {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-brand {
+      color: white !important;
+      font-weight: 600;
+      font-size: 1.5rem;
+    }
+
+    .upload-section, .video-section, .analysis-box, .data-log, .formula-section {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      margin-bottom: 25px;
+      color: #333;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .upload-section:hover, .video-section:hover, .analysis-box:hover, .data-log:hover, .formula-section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .analysis-box {
+      background: rgba(233, 245, 255, 0.9);
+    }
+
+    .data-log {
+      height: 300px;
+      overflow-y: auto;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .formula-section h3 {
+      color: #007bff;
+      font-weight: 600;
+    }
+
+    .formula-section p {
+      margin: 0;
+      font-family: 'Courier New', Courier, monospace;
+      color: #333;
+    }
+
+    .data-log p {
+      margin: 0;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .data-log p:last-child {
+      border-bottom: none;
+    }
+
+    .analysis-box h2 {
+      color: #007bff;
+      font-weight: 600;
+    }
+
+    .analysis-box p {
+      margin: 0;
+      font-size: 1.1em;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      border: none;
+      font-weight: 500;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #2575fc, #6a11cb);
+      transform: translateY(-3px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-control {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid #ddd;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-control:focus {
+      background: rgba(255, 255, 255, 0.95);
+      border-color: #6a11cb;
+      box-shadow: 0 0 10px rgba(106, 17, 203, 0.5);
+    }
+
+    /* Animations */
+    .animate__animated {
+      animation-duration: 1s;
+    }
+
+    /* Custom Scrollbar */
+    .data-log::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .data-log::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+
+    .data-log::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      border-radius: 10px;
+    }
+
+    /* Glow Effect */
+    .glow {
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from {
+        box-shadow: 0 0 10px rgba(106, 17, 203, 0.5);
+      }
+      to {
+        box-shadow: 0 0 20px rgba(106, 17, 203, 0.9);
+      }
+    }
+
+    /* Icon Styling */
+    .icon {
+      font-size: 1.5rem;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark animate__animated animate__fadeInDown">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <i class="fas fa-chart-line icon"></i>Object Motion Analysis
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container my-5">
+    <!-- Upload Section -->
+    <div class="upload-section animate__animated animate__fadeInLeft glow">
+      <h2 class="mb-4"><i class="fas fa-upload icon"></i>Upload Video</h2>
+      <form action="/upload" method="POST" enctype="multipart/form-data" class="row g-3">
+        <div class="col-md-8">
+          <input type="file" name="video_file" class="form-control" accept="video/*" required>
+        </div>
+        <div class="col-md-4">
+          <button type="submit" class="btn btn-primary w-100">
+            <i class="fas fa-cloud-upload-alt icon"></i>Upload
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Video Section -->
+    {% if video_uploaded %}
+    <div class="video-section animate__animated animate__fadeInRight glow">
+      <h2 class="mb-4"><i class="fas fa-video icon"></i>Video Stream</h2>
+      <div class="text-center">
+        <img src="{{ url_for('video_feed') }}" class="img-fluid rounded" alt="Video Stream">
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Data Log Section -->
+    <div class="data-log animate__animated animate__fadeInUp glow">
+      <h2 class="mb-4"><i class="fas fa-list-alt icon"></i>Frame Data Output</h2>
+      <div id="data-log"></div>
+    </div>
+
+    <!-- Formula Section -->
+    <div class="formula-section animate__animated animate__fadeInUp glow">
+      <h3><i class="fas fa-calculator icon"></i>Formulas</h3>
+      <div class="mb-3">
+        <h4>Velocity</h4>
+        <p>Velocity = (displacement in pixels × PIXEL_TO_CM) × FRAME_RATE</p>
+      </div>
+      <div class="mb-3">
+        <h4>Acceleration</h4>
+        <p>Acceleration = (Velocity_current - Velocity_previous) / dt</p>
+      </div>
+      <div class="mb-3">
+        <h4>Force</h4>
+        <p>Force = Mass × Acceleration</p>
+      </div>
+      <div>
+        <h4>Direction</h4>
+        <p>Direction is determined based on the displacement vector's angle.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript for SSE to update frame data and analysis box -->
+  <script>
+    const evtSource = new EventSource("/data_feed");
+    const dataLog = document.getElementById("data-log");
+
+    // Variables for analysis box
+    let processedFrames = 0;
+    let totalDistance = 0;
+    let maxVelocity = 0;
+    let minVelocity = Infinity;
+    let totalVelocity = 0;
+    let totalAcceleration = 0;
+
+    evtSource.onmessage = function(event) {
+      const data = JSON.parse(event.data);
+
+      // Check if the video has ended
+      if (data.message === "Video Ended") {
+        // Display final analysis
+        document.getElementById("processed-frames").textContent = processedFrames;
+        document.getElementById("total-distance").textContent = totalDistance.toFixed(2) + " cm";
+        document.getElementById("max-velocity").textContent = maxVelocity.toFixed(2) + " cm/s";
+        document.getElementById("min-velocity").textContent = minVelocity.toFixed(2) + " cm/s";
+        document.getElementById("avg-velocity").textContent = (totalVelocity / processedFrames).toFixed(2) + " cm/s";
+        document.getElementById("avg-acceleration").textContent = (totalAcceleration / processedFrames).toFixed(2) + " cm/s²";
+        return; // Stop further processing
+      }
+
+      // Update frame data log
+      const output = `Frame: ${data.frame}, Velocity: ${data.velocity.toFixed(2)} cm/s, 
+                      Acceleration: ${data.acceleration.toFixed(2)} cm/s², 
+                      Direction: ${data.direction}`;
+      const para = document.createElement("p");
+      para.textContent = output;
+      dataLog.appendChild(para);
+      dataLog.scrollTop = dataLog.scrollHeight;
+
+      // Update analysis box
+      processedFrames++;
+      totalDistance += (data.velocity / FRAME_RATE) * PIXEL_TO_CM;
+      totalVelocity += data.velocity;
+      totalAcceleration += data.acceleration;
+
+      if (data.velocity > maxVelocity) maxVelocity = data.velocity;
+      if (data.velocity < minVelocity) minVelocity = data.velocity;
+    };
+  </script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
